@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Terviva — Pongamia Supply Chain & Economics Simulator | Pan India</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    html { font-size: 16px; }
+    @media (max-width: 1600px) { html { font-size: 15px; } }
+    @media (max-width: 1366px) { html { font-size: 14px; } }
+    body { font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; background-color: #f0fdf4; }
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col text-slate-800">
+
+  <!-- HEADER / BRANDING -->
+  <header class="bg-gradient-to-r from-emerald-950 via-slate-900 to-emerald-950 text-white px-4 sm:px-6 py-3 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 shrink-0 border-b border-emerald-800/60 shadow-lg">
+    <div class="flex items-center gap-3 sm:gap-4">
+      <!-- TERVIVA TEXT LOGO BADGE -->
+      <div class="px-3 sm:px-4 py-1 sm:py-1.5 bg-emerald-900/90 border border-emerald-400/40 rounded-xl flex items-center justify-center shrink-0 shadow-inner">
+        <span class="text-white font-extrabold text-xl sm:text-2xl tracking-wide font-sans">
+          Terviva
+        </span>
+      </div>
+      <div class="border-l border-emerald-700/60 pl-3 sm:pl-4 py-0.5">
+        <h1 class="text-xs sm:text-base font-bold text-amber-300 leading-tight tracking-wide">Pongamia Supply Chain & Economics Simulator — Pan India</h1>
+        <p class="text-[10px] sm:text-[11px] text-emerald-200/80 font-medium">Pan India Sourcing | Central Crushing at Uran Islampur, MH</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <div class="flex flex-col lg:flex-row flex-1">
+    
+    <!-- LEFT SIDEBAR: EDITABLE INPUT CONTROLS -->
+    <aside class="w-full lg:w-80 bg-white border-b lg:border-b-0 lg:border-r border-emerald-100 p-3.5 sm:p-4 overflow-y-auto shrink-0 flex flex-col gap-4 text-xs shadow-md max-h-[50vh] lg:max-h-screen lg:sticky lg:top-0 lg:self-start lg:h-screen">
+      
+      <!-- SECTION 1: CURRENT MARKET PRICES -->
+      <div class="bg-gradient-to-br from-emerald-50 via-teal-50/50 to-emerald-100/40 p-3 sm:p-3.5 rounded-2xl border border-emerald-200/80 space-y-3 shadow-sm">
+        <div class="border-b border-emerald-200 pb-2">
+          <h2 class="font-extrabold text-emerald-950 text-xs uppercase tracking-wider flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block shadow-xs"></span> CURRENT MARKET PRICES
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-2.5">
+          <div>
+            <label class="block font-bold text-emerald-900 mb-1 text-[11px] sm:text-xs">Oil Market Price (Ex-Dock Base ₹ / kg oil)</label>
+            <input type="number" id="oilPrice" value="130" class="w-full border-2 border-emerald-200 rounded-xl px-2.5 py-1.5 bg-white focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none text-slate-900 font-extrabold text-sm shadow-xs transition-all">
+          </div>
+
+          <div>
+            <label class="block font-bold text-emerald-900 mb-1 text-[11px] sm:text-xs">Gross Cake Price (Delivered ₹ / kg cake)</label>
+            <input type="number" id="cakePrice" value="31" class="w-full border-2 border-emerald-200 rounded-xl px-2.5 py-1.5 bg-white focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none text-slate-900 font-extrabold text-sm shadow-xs transition-all">
+          </div>
+
+          <div>
+            <label class="block font-bold text-amber-950 mb-1 text-[11px] sm:text-xs">Bean Buying Target Price (₹ / kg bean)</label>
+            <input type="number" id="beanPrice" value="45" class="w-full border-2 border-amber-300 rounded-xl px-2.5 py-1.5 bg-amber-50 focus:bg-white focus:ring-2 focus:ring-amber-500 focus:border-amber-500 focus:outline-none text-amber-950 font-extrabold text-sm shadow-xs transition-all">
+          </div>
+
+          <div>
+            <label class="block font-bold text-sky-950 mb-1 text-[11px] sm:text-xs">Seed Moisture at Purchase (%)</label>
+            <input type="number" id="moisture" value="9" step="0.5" class="w-full border-2 border-sky-300 rounded-xl px-2.5 py-1.5 bg-sky-50 focus:bg-white focus:ring-2 focus:ring-sky-500 focus:border-sky-500 focus:outline-none text-sky-950 font-extrabold text-sm shadow-xs transition-all">
+            <div class="flex justify-between items-center mt-1 gap-1">
+              <span id="moistureBand" class="text-[10px] font-extrabold px-2 py-0.5 rounded border">Best</span>
+              <span class="text-[10px] text-slate-500 font-semibold">Buy 7–14% | Best 8–10%</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- SECTION 2: LOCATION OPERATIONAL & SUPPLY CHAIN INPUTS -->
+      <div class="border-b border-slate-200 pt-1 pb-1">
+        <h2 class="font-extrabold text-slate-900 text-xs uppercase tracking-wider">Crushing Hub Operational Inputs</h2>
+        <p class="text-slate-500 text-[11px]">Adjust outturns, logistics & cake freight.</p>
+      </div>
+
+      <div class="space-y-3.5">
+        
+        <!-- URAN ISLAMPUR, MH -->
+        <div class="bg-gradient-to-br from-blue-50 to-indigo-50/60 p-3 sm:p-3.5 rounded-2xl border-2 border-indigo-200/90 space-y-2.5 shadow-xs">
+          <div class="border-b border-indigo-200 pb-1.5 flex justify-between items-center">
+            <span class="font-extrabold text-indigo-950 text-xs flex items-center gap-1">📍 Uran Islampur, MH</span>
+            <span class="text-[9px] bg-indigo-100 text-indigo-800 font-bold px-1.5 py-0.5 rounded">Crushing Hub</span>
+          </div>
+          
+          <!-- Inbound & Processing -->
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="text-[10px] text-indigo-900 font-bold block">Oil Outturn %</label>
+              <input type="number" id="outturnMH" value="23" step="0.5" class="w-full border border-indigo-300 rounded-lg px-2 py-1 bg-white font-extrabold text-slate-800 focus:ring-2 focus:ring-indigo-500">
+            </div>
+            <div>
+              <label class="text-[10px] text-indigo-900 font-bold block">Cake % (auto: 95 − Oil)</label>
+              <input type="number" id="cakeOutturnMH" value="70" readonly tabindex="-1" title="Cake = 100% − Oil % − 5% wastage (sludge)" class="w-full border border-slate-200 rounded-lg px-2 py-1 bg-slate-100 font-extrabold text-slate-500 cursor-not-allowed focus:outline-none">
+            </div>
+            <div>
+              <label class="text-[10px] text-slate-600 font-semibold block">Processing (₹/kg)</label>
+              <input type="number" id="procMH" value="6.00" step="0.1" class="w-full border border-slate-300 rounded-lg px-2 py-1 bg-white font-bold text-slate-800">
+            </div>
+            <div>
+              <label class="text-[10px] text-slate-600 font-semibold block">Primary Trans (₹/kg)</label>
+              <input type="number" id="pTransMH" value="0.00" step="0.1" class="w-full border border-slate-300 rounded-lg px-2 py-1 bg-white font-bold text-slate-800">
+            </div>
+            <div>
+              <label class="text-[10px] text-slate-600 font-semibold block">Secondary Trans (₹/kg)</label>
+              <input type="number" id="rTransMH" value="2.00" step="0.1" class="w-full border border-slate-300 rounded-lg px-2 py-1 bg-white font-bold text-slate-800">
+            </div>
+            <div>
+              <label class="text-[10px] text-slate-600 font-semibold block">WH & Handling (₹/kg)</label>
+              <input type="number" id="loadMH" value="0.60" step="0.1" class="w-full border border-slate-300 rounded-lg px-2 py-1 bg-white font-bold text-slate-800">
+            </div>
+          </div>
+
+          <!-- Post-Processing Logistics Divider -->
+          <div class="pt-2 border-t-2 border-dashed border-indigo-300/80 mt-1">
+            <span class="text-[10px] uppercase font-extrabold text-indigo-800 tracking-wider block mb-1">🚚 Post-Processing Logistics</span>
+            <div>
+              <label class="text-[10px] text-indigo-950 font-bold block">Cake Freight (₹ / kg cake)</label>
+              <input type="number" id="cakeFreightMH" value="2.00" step="0.1" class="w-full border-2 border-indigo-400 rounded-lg px-2 py-1 bg-indigo-100/50 font-extrabold text-indigo-950 focus:ring-2 focus:ring-indigo-500">
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="mt-auto pt-3 border-t border-slate-200 text-[11px] text-slate-500 space-y-0.5 shrink-0">
+        <details class="mb-2.5 rounded-xl border border-slate-200 bg-slate-50 px-2.5 py-2">
+          <summary class="cursor-pointer font-bold text-slate-600 text-[11px] select-none">⚙️ Advanced settings</summary>
+          <div class="mt-2">
+            <label class="block font-bold text-slate-700 mb-1 text-[10px]">Standard Moisture for Outturn (%)</label>
+            <input type="number" id="stdMoisture" value="9" step="0.5" class="w-full border border-slate-300 rounded-lg px-2 py-1 bg-white font-bold text-slate-800 focus:ring-2 focus:ring-sky-500 focus:outline-none">
+            <p class="text-[10px] text-slate-400 mt-1">Moisture at which oil outturn is measured. Company standard: 9%.</p>
+          </div>
+        </details>
+        <p class="font-bold text-slate-700 flex items-center gap-1">🔒 Proprietary Pricing Model</p>
+        <p class="text-slate-400">All logic & formulas locked</p>
+      </div>
+    </aside>
+
+    <!-- RIGHT DASHBOARD VIEW -->
+    <main class="flex-1 min-w-0 p-3.5 sm:p-5 flex flex-col gap-4 sm:gap-5 bg-gradient-to-br from-slate-100 via-slate-50 to-emerald-50/20">
+      
+      <!-- TOP KPI CARDS FOR LOCATIONS -->
+      <div class="grid grid-cols-1 gap-3.5 sm:gap-4" id="locationCards" data-single="1">
+        <!-- Injected dynamically via JS -->
+      </div>
+
+      <!-- BOTTOM TABS SECTION FOR MATRICES -->
+      <div class="bg-white rounded-2xl shadow-md border border-slate-200/90 flex-1 flex flex-col overflow-hidden">
+        
+        <!-- TAB BUTTONS -->
+        <div class="flex overflow-x-auto border-b border-slate-200 bg-slate-100/80 text-xs font-semibold p-1 sm:p-1.5 gap-1 sm:gap-1.5 shrink-0 no-scrollbar">
+          <button onclick="switchTab('tab-whatif')" id="btn-tab-whatif" class="px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl transition-all border-b-2 border-emerald-600 text-emerald-900 font-bold bg-white shadow-sm whitespace-nowrap">
+            Breakeven & What-If Solver
+          </button>
+          <button onclick="switchTab('tab-plmatrix')" id="btn-tab-plmatrix" class="px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl transition-all text-slate-600 hover:text-slate-900 hover:bg-white/80 whitespace-nowrap">
+            <span id="plTabLabel">Karnataka Profit / Loss Matrix</span>
+          </button>
+          <button onclick="switchTab('tab-bematrix')" id="btn-tab-bematrix" class="px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl transition-all text-slate-600 hover:text-slate-900 hover:bg-white/80 whitespace-nowrap">
+            Breakeven Price vs Oil & Outturn Matrix
+          </button>
+          <button onclick="switchTab('tab-moisture')" id="btn-tab-moisture" class="px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl transition-all text-slate-600 hover:text-slate-900 hover:bg-white/80 whitespace-nowrap">
+            💧 Moisture Impact
+          </button>
+        </div>
+
+        <!-- TAB CONTENT 1: WHAT IF SOLVER -->
+        <div id="tab-whatif" class="p-3.5 sm:p-5 flex-1 overflow-auto">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 sm:gap-0 mb-3">
+            <h3 class="font-extrabold text-slate-900 text-xs sm:text-sm flex items-center gap-2">
+              <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-amber-500 inline-block shadow-xs"></span> Breakeven Bean Price & Target Sensitivity Analysis
+            </h3>
+            <span class="text-[10px] sm:text-[11px] text-slate-500 font-semibold bg-slate-100 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg">Oil: Ex-Dock base | Cake: net of freight & 5% GST | 5% wastage</span>
+          </div>
+          <div class="overflow-x-auto rounded-xl border-2 border-slate-200/80 shadow-xs">
+            <table class="w-full text-xs text-left text-slate-700 min-w-[550px]">
+              <thead id="whatIfHead" class="bg-gradient-to-r from-slate-800 to-emerald-950 text-white uppercase font-bold text-[10px] sm:text-[11px] tracking-wider"></thead>
+              <tbody id="whatIfTable" class="divide-y divide-slate-100 bg-white">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TAB CONTENT 2: P/L MATRIX -->
+        <div id="tab-plmatrix" class="p-3.5 sm:p-5 flex-1 overflow-auto hidden">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 sm:gap-0 mb-3">
+            <h3 id="plTitle" class="font-extrabold text-slate-900 text-xs sm:text-sm">Karnataka — Profit / (Loss) ₹/kg (Outturn % vs Bean Price)</h3>
+            <span class="text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-lg bg-emerald-100 text-emerald-900 border border-emerald-300">Green = Profit | Red = Loss</span>
+          </div>
+          <div class="overflow-x-auto rounded-xl border-2 border-slate-200/80 shadow-xs" id="plMatrixContainer"></div>
+        </div>
+
+        <!-- TAB CONTENT 3: BREAKEVEN MATRIX -->
+        <div id="tab-bematrix" class="p-3.5 sm:p-5 flex-1 overflow-auto hidden">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 sm:gap-0 mb-3">
+            <h3 id="beTitle" class="font-extrabold text-slate-900 text-xs sm:text-sm">Karnataka — Affordable Bean Price ₹/kg (Oil Price vs Outturn %)</h3>
+            <span class="text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-lg bg-amber-100 text-amber-900 border border-amber-300">Max affordable bean price with zero loss (at purchase moisture)</span>
+          </div>
+          <div class="overflow-x-auto rounded-xl border-2 border-slate-200/80 shadow-xs" id="beMatrixContainer"></div>
+        </div>
+
+        <!-- TAB CONTENT 4: MOISTURE IMPACT -->
+        <div id="tab-moisture" class="p-3.5 sm:p-5 flex-1 overflow-auto hidden">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 sm:gap-0 mb-3">
+            <h3 id="moistTitle" class="font-extrabold text-slate-900 text-xs sm:text-sm">Moisture Impact on Real Bean Cost & Max Payable Price</h3>
+            <span class="text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-lg bg-sky-100 text-sky-900 border border-sky-300">Green = Best 8–10% | Amber = Acceptable 7–14% | Red = Outside range</span>
+          </div>
+          <div class="overflow-x-auto rounded-xl border-2 border-slate-200/80 shadow-xs" id="moistMatrixContainer"></div>
+          <p id="moistNote" class="text-[10px] sm:text-[11px] text-slate-500 mt-2.5 leading-relaxed"></p>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- FOOTER SIGNATURE -->
+  <footer class="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 text-slate-300 text-[10px] sm:text-[11px] px-4 sm:px-6 py-2.5 flex flex-col sm:flex-row justify-between items-center gap-2 shrink-0 border-t border-emerald-900/40 shadow-inner">
+    <div class="font-medium text-slate-400 text-center sm:text-left">
+      © 2026 Terviva Pongamia Processing Model • Confidential
+    </div>
+    <div class="font-semibold text-emerald-400 flex items-center gap-1.5 text-center sm:text-right">
+      Model Prepared & Maintained By: <span class="text-white font-extrabold bg-emerald-950/80 px-2.5 py-0.5 rounded-lg border border-emerald-500/40 text-[10px] sm:text-xs">Chethan H C (Junior Manager - Procurement)</span>
+    </div>
+  </footer>
+
+  <!-- MODEL ENGINE SCRIPT -->
+  <script>
+    // ===== CONFIG =====
+    const LOCS = [
+      { key: 'MH', name: 'Uran Islampur, MH (Pan India Hub)', borderHeader: 'from-indigo-600 to-blue-700', cell: 'text-indigo-950 bg-indigo-50/20' }
+    ];
+    const MATRIX_LOC = 'MH';
+    const KPI_GRID = 'grid-cols-2 md:grid-cols-4';
+    // ===== END CONFIG =====
+
+    // Oil % + Cake % + Wastage (sludge / foots) = 100%
+    const WASTAGE = 0.05;
+    const GST_CAKE = 1.05;
+
+    const num = id => { const el = document.getElementById(id); return el ? (parseFloat(el.value) || 0) : 0; };
+
+    // Company buying norms: buy 7–14%, best 8–10%
+    function getBand(mPct) {
+      mPct = Math.round(mPct * 100) / 100;
+      if (mPct >= 8 && mPct <= 10) return { label: 'Best', pill: 'bg-emerald-100 text-emerald-800 border-emerald-300', row: 'bg-emerald-50' };
+      if (mPct >= 7 && mPct <= 14) return { label: 'Acceptable', pill: 'bg-amber-100 text-amber-800 border-amber-300', row: 'bg-amber-50/70' };
+      return { label: mPct < 7 ? 'Below Buy Range' : 'Too Wet — Reject', pill: 'bg-rose-100 text-rose-700 border-rose-300', row: 'bg-rose-50/70' };
+    }
+
+    function calculateModel() {
+      const oilPrice = num('oilPrice');          // Ex-dock base price, no GST adjustment
+      const grossCakePrice = num('cakePrice');
+      const beanPrice = num('beanPrice');
+      const moist = num('moisture') / 100;
+      const stdMoist = num('stdMoisture') / 100;
+
+      // Moisture: ₹ paid per kg at purchase moisture -> real cost per kg at standard moisture
+      const mf = moist < 1 ? (1 - stdMoist) / (1 - moist) : 1;
+      const effBean = beanPrice * mf;
+      const band = getBand(moist * 100);
+
+      const pill = document.getElementById('moistureBand');
+      pill.textContent = band.label;
+      pill.className = 'text-[10px] font-extrabold px-2 py-0.5 rounded border ' + band.pill;
+
+      const res = {};
+      LOCS.forEach(L => {
+        const outturn = num('outturn' + L.key) / 100;
+        const cakeOutturn = Math.max(0, 1 - WASTAGE - outturn);
+        document.getElementById('cakeOutturn' + L.key).value = (cakeOutturn * 100).toFixed(1);
+
+        const cakeFreight = num('cakeFreight' + L.key);
+        const proc = num('proc' + L.key), pTrans = num('pTrans' + L.key), rTrans = num('rTrans' + L.key), loading = num('load' + L.key);
+
+        const netCakeRealization = (grossCakePrice - cakeFreight) / GST_CAKE;
+        const oilRev = oilPrice * outturn;
+        const netCakeRev = netCakeRealization * cakeOutturn;
+        const totRev = oilRev + netCakeRev;
+        const nonSeedExp = proc + pTrans + rTrans + loading;
+
+        const beBeanPrice = totRev - nonSeedExp;      // per kg bean at standard moisture
+        const maxPayable = beBeanPrice / mf;          // per kg bean at purchase moisture
+        const pl = beBeanPrice - effBean;
+
+        // Goal seek (cake moves with oil: cake = 95% − oil)
+        const need = effBean + nonSeedExp;
+        const denom = oilPrice - netCakeRealization;
+        const reqOt = denom > 0 ? (need - netCakeRealization * (1 - WASTAGE)) / denom : 0;
+        const reqOilPrice = outturn > 0 ? (need - netCakeRev) / outturn : 0;
+        const reqGrossCakePrice = cakeOutturn > 0 ? GST_CAKE * ((need - oilRev) / cakeOutturn) + cakeFreight : 0;
+
+        res[L.key] = { ...L, outturn, cakeOutturn, cakeFreight, proc, pTrans, rTrans, loading,
+          oilRev, netCakeRealization, netCakeRev, totRev, nonSeedExp, beBeanPrice, maxPayable, pl,
+          reqOt, reqOilPrice, reqGrossCakePrice };
+      });
+
+      const ctx = { oilPrice, grossCakePrice, beanPrice, moist, stdMoist, mf, effBean, band };
+      renderKPICards(res, ctx);
+      renderWhatIfTable(res, ctx);
+      renderPLMatrix(res[MATRIX_LOC], ctx);
+      renderBEMatrix(res[MATRIX_LOC], ctx);
+      renderMoistureMatrix(res, ctx);
+    }
+
+    function renderKPICards(res, ctx) {
+      const container = document.getElementById('locationCards');
+      container.innerHTML = '';
+
+      for (let key in res) {
+        const r = res[key];
+        const isProfit = r.pl >= 0;
+
+        container.innerHTML += `
+          <div class="bg-white rounded-2xl border-2 border-slate-200/90 shadow-md flex flex-col justify-between hover:shadow-lg transition-all overflow-hidden">
+            <div class="bg-gradient-to-r ${r.borderHeader} px-3.5 sm:px-4 py-2 sm:py-2.5 text-white flex justify-between items-center">
+              <span class="font-extrabold text-xs sm:text-sm tracking-wide">${r.name}</span>
+              <span class="px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-[11px] font-extrabold tracking-wider uppercase bg-white ${isProfit ? 'text-emerald-700 border border-emerald-300' : 'text-rose-600 border border-rose-300'} shadow-sm">
+                ${isProfit ? '▲ PROFIT' : '🔻 LOSS'}
+              </span>
+            </div>
+
+            <div class="p-3 sm:p-4 flex-1 flex flex-col justify-between gap-2.5 sm:gap-3">
+              <div class="grid ${KPI_GRID} gap-2 sm:gap-2.5 text-xs">
+                <div class="bg-slate-50 p-2 sm:p-2.5 rounded-xl border border-slate-200">
+                  <span class="text-slate-500 block text-[9px] sm:text-[10px] font-bold mb-0.5">Total Revenue</span>
+                  <strong class="text-slate-900 text-xs sm:text-sm font-extrabold">₹${r.totRev.toFixed(2)}</strong>
+                </div>
+                <div class="bg-slate-50 p-2 sm:p-2.5 rounded-xl border border-slate-200">
+                  <span class="text-slate-500 block text-[9px] sm:text-[10px] font-bold mb-0.5">Supply Chain Cost</span>
+                  <strong class="text-slate-900 text-xs sm:text-sm font-extrabold">₹${r.nonSeedExp.toFixed(2)}</strong>
+                </div>
+                <div class="bg-amber-50 p-2 sm:p-2.5 rounded-xl border border-amber-200">
+                  <span class="text-amber-800 block text-[9px] sm:text-[10px] font-bold mb-0.5">Breakeven Price</span>
+                  <strong class="text-amber-950 text-xs sm:text-sm font-extrabold">₹${r.beBeanPrice.toFixed(2)}</strong>
+                </div>
+                <div class="${isProfit ? 'bg-emerald-50 border-emerald-300' : 'bg-rose-50 border-rose-300'} p-2 sm:p-2.5 rounded-xl border">
+                  <span class="${isProfit ? 'text-emerald-900' : 'text-rose-900'} block text-[9px] sm:text-[10px] font-bold mb-0.5">Profit / (Loss)</span>
+                  <strong class="${isProfit ? 'text-emerald-700' : 'text-rose-700'} text-xs sm:text-sm font-extrabold">₹${r.pl.toFixed(2)}</strong>
+                </div>
+              </div>
+
+              <!-- REALIZATION HIGHLIGHT BOX -->
+              <div class="bg-emerald-50/70 p-2 sm:p-2.5 rounded-xl border border-emerald-200 text-[10px] sm:text-[11px] flex justify-between items-center text-emerald-950">
+                <span class="font-bold">Net Cake Realization (Ex-GST):</span>
+                <span class="font-black text-emerald-900">₹${r.netCakeRealization.toFixed(2)} <span class="text-[8px] sm:text-[9px] font-normal text-slate-500">( (₹${ctx.grossCakePrice.toFixed(2)} - ₹${r.cakeFreight.toFixed(2)}) / 1.05 )</span></span>
+              </div>
+
+              <!-- MOISTURE HIGHLIGHT BOX -->
+              <div class="bg-sky-50/70 p-2 sm:p-2.5 rounded-xl border border-sky-200 text-[10px] sm:text-[11px] flex justify-between items-center text-sky-950 gap-2">
+                <span class="font-bold">Real Bean Cost @ ${(ctx.moist * 100).toFixed(1)}% Moisture: <span class="text-[9px] font-extrabold px-1.5 py-0.5 rounded border ${ctx.band.pill}">${ctx.band.label}</span></span>
+                <span class="font-black text-sky-900 whitespace-nowrap">₹${ctx.effBean.toFixed(2)} <span class="text-[8px] sm:text-[9px] font-normal text-slate-500">| Max pay ₹${r.maxPayable.toFixed(2)}</span></span>
+              </div>
+
+              <div class="bg-slate-50 p-2 sm:p-2.5 rounded-xl border border-slate-200 text-[9px] sm:text-[10px] text-slate-700 grid grid-cols-2 gap-x-2 gap-y-1">
+                <div><span class="text-slate-400">Processing:</span> <strong>₹${r.proc.toFixed(2)}</strong></div>
+                <div><span class="text-slate-400">Primary Trans:</span> <strong>₹${r.pTrans.toFixed(2)}</strong></div>
+                <div><span class="text-slate-400">Secondary Trans:</span> <strong>₹${r.rTrans.toFixed(2)}</strong></div>
+                <div><span class="text-slate-400">WH & Handling:</span> <strong>₹${r.loading.toFixed(2)}</strong></div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function renderWhatIfTable(res, ctx) {
+      const keys = Object.keys(res);
+      document.getElementById('whatIfHead').innerHTML = `<tr>
+          <th class="p-2.5 sm:p-3 border-b border-slate-700">Particulars</th>
+          ${keys.map(k => `<th class="p-2.5 sm:p-3 border-b border-slate-700 text-right">${res[k].name}</th>`).join('')}
+        </tr>`;
+
+      const at = `(at ₹${ctx.beanPrice.toFixed(2)} Bean Price, ${(ctx.moist * 100).toFixed(1)}% Moisture)`;
+      const row = (label, fmt, last) => `
+        <tr class="hover:bg-slate-50 transition-colors ${last ? '' : 'border-b border-slate-100'}">
+          <td class="p-2.5 sm:p-3.5 font-bold text-slate-800">${label}</td>
+          ${keys.map(k => `<td class="p-2.5 sm:p-3.5 text-right font-extrabold ${res[k].cell} whitespace-nowrap">${fmt(res[k])}</td>`).join('')}
+        </tr>`;
+
+      document.getElementById('whatIfTable').innerHTML = `
+        <tr class="bg-amber-50/80 font-extrabold text-amber-950 border-b border-amber-200">
+          <td class="p-2.5 sm:p-3.5 flex items-center gap-1.5 sm:gap-2">
+            <span>🎯</span> Breakeven Bean Buying Price (Max Affordable Bean Price at Present Outturn & Freight, ${(ctx.stdMoist * 100).toFixed(1)}% Standard Moisture)
+          </td>
+          ${keys.map((k, i) => `<td class="p-2.5 sm:p-3.5 text-right text-xs sm:text-sm font-black text-amber-900 ${i % 2 ? 'bg-amber-100/40' : 'bg-amber-100/60'} whitespace-nowrap">₹${res[k].beBeanPrice.toFixed(2)} / kg</td>`).join('')}
+        </tr>
+        <tr class="bg-sky-50/80 font-extrabold text-sky-950 border-b border-sky-200">
+          <td class="p-2.5 sm:p-3.5 flex items-center gap-1.5 sm:gap-2">
+            <span>💧</span> Max Bean Price Payable at ${(ctx.moist * 100).toFixed(1)}% Purchase Moisture (${ctx.band.label})
+          </td>
+          ${keys.map(k => `<td class="p-2.5 sm:p-3.5 text-right text-xs sm:text-sm font-black text-sky-900 bg-sky-100/50 whitespace-nowrap">₹${res[k].maxPayable.toFixed(2)} / kg</td>`).join('')}
+        </tr>
+        ${row(`Oil Outturn % Needed to Break Even ${at} — cake auto-adjusts`, r => `${(r.reqOt * 100).toFixed(2)}%`)}
+        ${row(`Oil Market Price (Ex-Dock) Needed to Break Even ${at}`, r => `₹${r.reqOilPrice.toFixed(2)} / kg`)}
+        ${row(`Gross Cake Delivered Price Needed to Break Even ${at}`, r => `₹${r.reqGrossCakePrice.toFixed(2)} / kg`, true)}
+      `;
+    }
+
+    function renderPLMatrix(r, ctx) {
+      document.getElementById('plTitle').textContent = `${r.name} — Profit / (Loss) ₹/kg (Oil Outturn % vs Bean Price, cake = 95% − oil)`;
+      document.getElementById('plTabLabel').textContent = `${r.name} Profit / Loss Matrix`;
+      const container = document.getElementById('plMatrixContainer');
+
+      const beanPrices = [42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52];
+      const outturns = [0.18, 0.20, 0.22, 0.24, 0.25, 0.26, 0.28, 0.30];
+      const nc = r.netCakeRealization;
+
+      let html = `<table class="w-full text-xs text-center border-collapse min-w-[650px]"><thead><tr class="bg-gradient-to-r from-slate-800 to-emerald-950 text-white font-extrabold"><th class="p-2.5 sm:p-3 border-r border-slate-700">Oil \\ Cake Outturn \\ Bean Price</th>`;
+      beanPrices.forEach(p => html += `<th class="p-2.5 sm:p-3 border-r border-slate-700">₹${p}</th>`);
+      html += `</tr></thead><tbody>`;
+
+      outturns.forEach(ot => {
+        const cake = 1 - WASTAGE - ot;
+        html += `<tr class="border-b border-slate-100"><td class="p-2 sm:p-2.5 font-extrabold bg-slate-100 border-r border-slate-200 text-slate-900">${(ot * 100).toFixed(0)}% <span class="text-[9px] font-semibold text-slate-500">/ ${(cake * 100).toFixed(0)}%</span></td>`;
+        beanPrices.forEach(p => {
+          const pl = (ctx.oilPrice * ot + nc * cake - r.nonSeedExp) - p * ctx.mf;
+          const bgClass = pl >= 0 ? 'bg-emerald-100/90 text-emerald-950 font-extrabold border-emerald-200' : 'bg-rose-50 text-rose-700 font-bold border-rose-100';
+          html += `<td class="p-2 sm:p-2.5 border-r border-slate-200 ${bgClass}">₹${pl.toFixed(2)}</td>`;
+        });
+        html += `</tr>`;
+      });
+
+      html += `</tbody></table>`;
+      container.innerHTML = html;
+    }
+
+    function renderBEMatrix(r, ctx) {
+      document.getElementById('beTitle').textContent = `${r.name} — Affordable Bean Price ₹/kg (Oil Price vs Oil Outturn %, cake = 95% − oil)`;
+      const container = document.getElementById('beMatrixContainer');
+
+      const oilPrices = [115, 120, 125, 130, 135, 140, 145, 150, 155, 160, 165, 170];
+      const outturns = [0.19, 0.20, 0.21, 0.22, 0.23, 0.24, 0.25, 0.26, 0.28, 0.30];
+      const nc = r.netCakeRealization;
+
+      let html = `<table class="w-full text-xs text-center border-collapse min-w-[650px]"><thead><tr class="bg-gradient-to-r from-slate-800 to-emerald-950 text-white font-extrabold"><th class="p-2.5 sm:p-3 border-r border-slate-700">Oil Price \\ Outturn</th>`;
+      outturns.forEach(ot => html += `<th class="p-2.5 sm:p-3 border-r border-slate-700">${(ot * 100).toFixed(0)}%</th>`);
+      html += `</tr></thead><tbody>`;
+
+      oilPrices.forEach(op => {
+        html += `<tr class="border-b border-slate-100"><td class="p-2 sm:p-2.5 font-extrabold bg-slate-100 border-r border-slate-200 text-slate-900">₹${op}</td>`;
+        outturns.forEach(ot => {
+          const be = ((op * ot + nc * (1 - WASTAGE - ot)) - r.nonSeedExp) / ctx.mf;
+          html += `<td class="p-2 sm:p-2.5 border-r border-slate-200 bg-amber-50/80 font-extrabold text-amber-950">₹${be.toFixed(2)}</td>`;
+        });
+        html += `</tr>`;
+      });
+
+      html += `</tbody></table>`;
+      container.innerHTML = html;
+    }
+
+    function renderMoistureMatrix(res, ctx) {
+      const container = document.getElementById('moistMatrixContainer');
+      const keys = Object.keys(res);
+      const single = keys.length === 1;
+      const levels = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+      const cur = Math.round(ctx.moist * 100 * 2) / 2;
+
+      let html = `<table class="w-full text-xs text-center border-collapse min-w-[650px]"><thead><tr class="bg-gradient-to-r from-slate-800 to-emerald-950 text-white font-extrabold">
+        <th class="p-2.5 sm:p-3 border-r border-slate-700">Moisture</th>
+        <th class="p-2.5 sm:p-3 border-r border-slate-700">Grade</th>
+        <th class="p-2.5 sm:p-3 border-r border-slate-700">Usable kg per 100 kg Bought</th>
+        <th class="p-2.5 sm:p-3 border-r border-slate-700">Real Cost @ ₹${ctx.beanPrice.toFixed(0)}</th>
+        ${keys.map(k => `<th class="p-2.5 sm:p-3 border-r border-slate-700">Max Pay — ${res[k].name}</th>`).join('')}
+        ${single ? `<th class="p-2.5 sm:p-3 border-r border-slate-700">Profit / (Loss) @ ₹${ctx.beanPrice.toFixed(0)}</th>` : ''}
+      </tr></thead><tbody>`;
+
+      levels.forEach(m => {
+        const b = getBand(m);
+        const f = (1 - ctx.stdMoist) / (1 - m / 100);
+        const isCur = m === cur;
+        html += `<tr class="border-b border-slate-100 ${b.row} ${isCur ? 'outline outline-2 outline-sky-500' : ''}">
+          <td class="p-2 sm:p-2.5 font-extrabold border-r border-slate-200 text-slate-900">${m}%${isCur ? ' ◀' : ''}</td>
+          <td class="p-2 sm:p-2.5 border-r border-slate-200"><span class="text-[10px] font-extrabold px-2 py-0.5 rounded border ${b.pill}">${b.label}</span></td>
+          <td class="p-2 sm:p-2.5 border-r border-slate-200 font-bold text-slate-800">${(100 / f).toFixed(1)} kg</td>
+          <td class="p-2 sm:p-2.5 border-r border-slate-200 font-extrabold text-slate-900">₹${(ctx.beanPrice * f).toFixed(2)}</td>
+          ${keys.map(k => {
+            const mp = res[k].beBeanPrice / f;
+            return `<td class="p-2 sm:p-2.5 border-r border-slate-200 font-extrabold ${mp >= ctx.beanPrice ? 'text-emerald-800' : 'text-rose-700'}">₹${mp.toFixed(2)}</td>`;
+          }).join('')}
+          ${single ? (() => { const pl = res[keys[0]].beBeanPrice - ctx.beanPrice * f; return `<td class="p-2 sm:p-2.5 border-r border-slate-200 font-extrabold ${pl >= 0 ? 'text-emerald-800' : 'text-rose-700'}">₹${pl.toFixed(2)}</td>`; })() : ''}
+        </tr>`;
+      });
+
+      html += `</tbody></table>`;
+      container.innerHTML = html;
+
+      document.getElementById('moistNote').innerHTML =
+        `Outturn is taken at <strong>${(ctx.stdMoist * 100).toFixed(1)}%</strong> standard moisture. Wetter seed carries extra water, so each rupee buys less usable seed. ` +
+        `Example: 100 kg bought at 14% gives only ${(100 * (1 - 0.14) / (1 - ctx.stdMoist)).toFixed(1)} kg at standard moisture. ` +
+        `Max Pay = highest price per kg you can pay at that moisture without loss (green = at or above your target price). ` +
+        `Above 14%, seed also risks mould and poor storage — a quality cost not counted in these numbers.`;
+    }
+
+    function switchTab(tabId) {
+      ['tab-whatif', 'tab-plmatrix', 'tab-bematrix', 'tab-moisture'].forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+        document.getElementById('btn-' + id).className = 'px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl transition-all text-slate-600 hover:text-slate-900 hover:bg-white/80 whitespace-nowrap';
+      });
+      document.getElementById(tabId).classList.remove('hidden');
+      document.getElementById('btn-' + tabId).className = 'px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl transition-all border-b-2 border-emerald-600 text-emerald-900 font-bold bg-white shadow-sm whitespace-nowrap';
+    }
+
+    // Recalculate on any sidebar input change
+    document.querySelectorAll('aside input').forEach(el => el.addEventListener('input', calculateModel));
+
+    // Initial load calculation
+    calculateModel();
+  </script>
+</body>
+</html>
